@@ -29,8 +29,8 @@ export class ApiService {
     );
   }
 
-  getPost(id:any): Observable<any> {
-    return this.http.get(this.apiURL + '/posts/' + id).pipe(
+  getPost(userId:any): Observable<any> {
+    return this.http.get(this.apiURL + '/posts/' + userId).pipe(
       retry(3)
     );
   }

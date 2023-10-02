@@ -9,6 +9,9 @@ import { ApiService } from '../services/api.service';
 export class HomePage {
   user: any;
   users: any;
+  id: number = 0;
+
+  postID: number = 0;
 
   posts: any;
   post: any = {
@@ -21,11 +24,19 @@ export class HomePage {
   compareWith: any;
 
   constructor(private api: ApiService) {
+    this.compareWith = this.compareWithFn;
+
     this.api.getPosts().subscribe((res) => {
       console.log(res[0]);
     }, (error) => {
       console.log(error);
     });
+  }
+
+  limpiarCampos() {
+    this.id = 0;
+    this.post.title = '';
+    this.post.body = '';
   }
 
   obtenerUsuarios() {
@@ -72,7 +83,26 @@ export class HomePage {
     })
   }
 
+  actualizarPost(tID:any,title: any, body: any) {
+    console.log(this.postID);
+    var post = {
+      title: title,
+      body: body,
+    }
+    this.api.updatePost(tID,post).subscribe((success) => {
+      console.log(success);
+      this.obtenerPosts();
+    }, error => {
+      console.log(error);
+    })
+  }
+
+  handleChange(ev:any) {
+    console.log('Current value:', JSON.stringify(ev.target.value));
+  }
+
   setPost(id: any) {
+    this.postID = id;
     this.api.getPost(id).subscribe((success) => {
       console.log(success);
       this.post.title = success.title;
